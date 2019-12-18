@@ -7,9 +7,17 @@ const {
 } = require('bottender/router');
 
 async function Greeting(context) {
-  const GREETING_MSG = `嗨！歡迎來到 JingRu Chatbot，一起享受歡樂的遊戲時光吧！`;
+  const GREETING_MSG = `嗨！歡迎來到 JingRu，一起享受歡樂的遊戲時光吧！輸入 help 查看說明。`;
 
   await context.sendText(GREETING_MSG);
+}
+
+async function Help(context) {
+  const msg = `說明：
+- 猜數字：輸入「猜數字」進行遊戲。
+- 比大小：輸入「比大小 N」來開始遊戲，N 預設是 2，可以不設定。輪流輸入「骰」來取得點數。
+`;
+  await context.sendText(msg);
 }
 
 async function GuessNumber(context) {
@@ -17,11 +25,14 @@ async function GuessNumber(context) {
 }
 
 async function Roller(context) {
+  const p = Number(context.event.text.split(" ")[1]);
+  const people = isInteger(p) ? p : 2;
+
   let state = context.state;
   state.roll = {
     start: true,
     result: [],
-    people: 2
+    people: people
   };
   context.setState(state);
 
@@ -73,8 +84,9 @@ module.exports = async function App(context) {
   }
 
   return router([
-    text(/^h(ello|i)|^\/start/, Greeting),
-    text('比大小', Roller),
+    text(/^h(ello|i)|^\/start/i, Greeting),
+    text(/^help/i, Help),
+    text(/^比大小/, Roller),
     text('骰', Roll),
     text('猜數字', GuessNumber),
   ]);
