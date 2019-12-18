@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "axios": "^0.19.0",
+    "bottender": "^1.0.4",
+    "minimist": "^1.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  },
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "console": "bottender start --console"
+  },
+  "name": "JingRu",
+  "version": "0.0.1",
+  "description": "JingRu: Game Bot for Couples.",
+  "main": "index.js",
+  "keywords": [
+    "game",
+    "chatbot"
+  ],
+  "author": "tigercosmos",
+  "license": "MIT"
+}
