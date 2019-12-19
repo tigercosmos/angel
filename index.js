@@ -154,7 +154,14 @@ async function Roll(context) {
 
 async function Draw(context) {
   const url = await getInstagramUrl();
-  console.log("image: ", url);
+  await context.replyImage({
+    originalContentUrl: url,
+    previewImageUrl: url,
+  });
+}
+
+async function DrawBTS(context) {
+  const url = await getInstagramUrl("bts");
   await context.replyImage({
     originalContentUrl: url,
     previewImageUrl: url,
@@ -176,5 +183,6 @@ module.exports = async function App(context) {
     text('答案', GuessNumberAnswer),
     text(/^\d\d\d\d$/, Guess),
     text(/^抽$/, Draw),
+    text(/^BTS$/i, DrawBTS),
   ]);
 };
