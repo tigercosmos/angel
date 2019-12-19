@@ -1,6 +1,4 @@
-const {
-  withProps
-} = require('bottender');
+const getInstagramUrl = require("./lib/getInstagramUrl")
 const {
   router,
   text
@@ -154,6 +152,11 @@ async function Roll(context) {
   await context.sendText(reply);
 }
 
+async function Draw(context) {
+  await context.replyImage(await getInstagramUrl());
+}
+
+
 module.exports = async function App(context) {
   if (context.event.isFollow || context.event.isJoin) {
     return Greeting;
@@ -167,5 +170,6 @@ module.exports = async function App(context) {
     text('猜數字', GuessNumber),
     text('答案', GuessNumberAnswer),
     text(/^\d\d\d\d$/, Guess),
+    text(/^抽$/, Draw),
   ]);
 };
