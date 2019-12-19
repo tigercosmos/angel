@@ -14,6 +14,8 @@ async function Help(context) {
   const msg = `說明：
 - 猜數字：輸入「猜數字」進行遊戲。
 - 比大小：輸入「比大小 N」來開始遊戲，N 預設是 2，可以不設定。輪流輸入「骰」來取得點數。
+- 抽：輸入「抽」來隨機出現圖片
+- BTS：輸入「BTS」來取得 BTS 照片。
 `;
   await context.sendText(msg);
 }
@@ -153,7 +155,7 @@ async function Roll(context) {
 }
 
 async function Draw(context) {
-  const url = await getInstagramUrl();
+  const url = await getInstagramUrl("");
   await context.replyImage({
     originalContentUrl: url,
     previewImageUrl: url,
