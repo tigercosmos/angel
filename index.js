@@ -153,7 +153,9 @@ async function Roll(context) {
 }
 
 async function Draw(context) {
-  await context.replyImage(await getInstagramUrl());
+  const url = await getInstagramUrl();
+  console.log("image: ", url);
+  await context.replyImage();
 }
 
 
