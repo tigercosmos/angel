@@ -170,6 +170,22 @@ async function DrawBTS(context) {
   });
 }
 
+async function DrawGirl(context) {
+  const url = await getInstagramUrl("girl");
+  await context.replyImage({
+    originalContentUrl: url,
+    previewImageUrl: url,
+  });
+}
+
+async function DrawConstellation(context) {
+  const url = await getInstagramUrl("constellation");
+  await context.replyImage({
+    originalContentUrl: url,
+    previewImageUrl: url,
+  });
+}
+
 
 module.exports = async function App(context) {
   if (context.event.isFollow || context.event.isJoin) {
@@ -185,6 +201,8 @@ module.exports = async function App(context) {
     text('答案', GuessNumberAnswer),
     text(/^\d\d\d\d$/, Guess),
     text(/^抽$/, Draw),
+    text(/^抽星座$/i, DrawConstellation),
+    text(/^抽正妹$/i, DrawGirl),
     text(/^BTS$/i, DrawBTS),
   ]);
 };
