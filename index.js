@@ -17,6 +17,7 @@ async function Help(context) {
 - 抽：輸入「抽」來隨機出現圖片
 - 抽正妹
 - 抽星座
+- 抽美食
 - BTS：輸入「BTS」來取得 BTS 照片。
 `;
   await context.sendText(msg);
@@ -188,6 +189,14 @@ async function DrawConstellation(context) {
   });
 }
 
+async function DrawFood(context) {
+  const url = await getInstagramUrl("food");
+  await context.replyImage({
+    originalContentUrl: url,
+    previewImageUrl: url,
+  });
+}
+
 
 module.exports = async function App(context) {
   if (context.event.isFollow || context.event.isJoin) {
@@ -205,6 +214,7 @@ module.exports = async function App(context) {
     text(/^抽$/, Draw),
     text(/^抽星座$/i, DrawConstellation),
     text(/^抽正妹$/i, DrawGirl),
+    text(/^抽美食$/i, DrawFood),
     text(/^BTS$/i, DrawBTS),
   ]);
 };
