@@ -45,10 +45,39 @@ async function GuessNumber(context) {
   let state = context.state;
   state.number = {
     start: true,
+    type: 1,
     answer: `${random1}${random2}${random3}${random4}`
   };
   context.setState(state);
   await context.sendText('遊戲開始！輸入四個數字來猜！');
+}
+
+async function GuessNumber2(context) {
+  const arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c'];
+  let i = Math.floor((Math.random() * arr.length));
+  const random1 = arr[i];
+  arr.splice(i, 1);
+  i = Math.floor((Math.random() * arr.length));
+  const random2 = arr[i];
+  arr.splice(i, 1);
+  i = Math.floor((Math.random() * arr.length));
+  const random3 = arr[i];
+  arr.splice(i, 1);
+  i = Math.floor((Math.random() * arr.length));
+  const random4 = arr[i];
+  arr.splice(i, 1);
+  i = Math.floor((Math.random() * arr.length));
+  const random5 = arr[i];
+  arr.splice(i, 1);
+
+  let state = context.state;
+  state.number = {
+    start: true,
+    type: 2,
+    answer: `${random1}${random2}${random3}${random4}${random5}`
+  };
+  context.setState(state);
+  await context.sendText('遊戲開始！輸入五個數字（0-9）加字母（a-c)來猜！例如: 13ac5');
 }
 
 async function GuessNumberAnswer(context) {
@@ -56,6 +85,10 @@ async function GuessNumberAnswer(context) {
 }
 
 async function Guess(context) {
+  if (context.state.number.type == 2) {
+    await context.sendText('模式為「猜數字2」，輸入 5 個數字或字母！');
+    return;
+  }
   if (!context.state.number.start) {
     await context.sendText('輸入「猜數字」開始！');
     return;
@@ -87,6 +120,52 @@ async function Guess(context) {
   }
 
   if (a == 4) {
+    const user = await context.getUserProfile();
+    const name = user.displayName;
+
+    let state = context.state;
+    state.number = {
+      start: false,
+    };
+    context.setState(state);
+    await context.sendText(`Bingo！${name} 猜對了！`);
+  } else {
+    await context.sendText(`${a} A ${b} B`);
+  }
+}
+
+async function Guess2(context) {
+  if (context.state.number.type == 1) {
+    await context.sendText('模式為「猜數字」，輸入 4 個數字！');
+    return;
+  }
+  if (!context.state.number.start) {
+    await context.sendText('輸入「猜數字2」開始！');
+    return;
+  }
+  const answer = context.state.number.answer;
+
+  const num = context.event.text;
+  for (let i = 0; i < 3; i++) {
+    for (let j = i + 1; j < 4; j++) {
+      if (num[i] == num[j]) {
+        await context.sendText('必須是 5 個「相異」數字或字母！');
+        return;
+      }
+    }
+  }
+  let a = 0;
+  let b = 0;
+  for (let i = 0; i < 5; i++) {
+    for (let j = 0; j < 5; j++) {
+      if (num[i] == answer[j]) {
+        if (i == j) a++;
+        else b++;
+      }
+    }
+  }
+
+  if (a == 5) {
     const user = await context.getUserProfile();
     const name = user.displayName;
 
@@ -208,9 +287,11 @@ module.exports = async function App(context) {
     text(/^help/i, Help),
     text(/^比大小/, Roller),
     text('骰', Roll),
-    text('猜數字', GuessNumber),
+    text(/^猜數字|guess$/i, GuessNumber),
+    text(/^猜數字2|guess2$/, GuessNumber2),
     text('答案', GuessNumberAnswer),
-    text(/^\d\d\d\d$/, Guess),
+    text(/^\d{4}$/, Guess),
+    text(/^(\d|[a-c]){5}$/, Guess2),
     text(/^抽$/, Draw),
     text(/^抽星座$/i, DrawConstellation),
     text(/^抽正妹$/i, DrawGirl),
