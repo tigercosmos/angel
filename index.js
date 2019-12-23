@@ -11,14 +11,16 @@ async function Greeting(context) {
 }
 
 async function Help(context) {
-  const msg = `說明：
-- 猜數字：輸入「猜數字」進行遊戲。
-- 比大小：輸入「比大小 N」來開始遊戲，N 預設是 2，可以不設定。輪流輸入「骰」來取得點數。
-- 抽：輸入「抽」來隨機出現圖片
-- 抽正妹
-- 抽星座
-- 抽美食
-- BTS：輸入「BTS」來取得 BTS 照片。
+  const msg = `輸入以下指令：
+- 猜數字：1A2B
+- 猜數字2：1A2B 強化版
+- 比大小：2 個人輪流輸入「骰」來取得點數
+- 比大小 N：N 為數字，N 個人輪流輸入「骰」來取得點數
+- 抽：隨機出現圖片
+- 抽正妹：隨機正妹
+- 抽星座：隨機星運圖
+- 抽美食：隨機美食
+- BTS：隨機取得 BTS 照片
 `;
   await context.sendText(msg);
 }
