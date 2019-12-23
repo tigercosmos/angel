@@ -9,7 +9,11 @@
 
 ## 展演
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/u4mPiIEad1g" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+點擊圖片來播放 Youtube 展示
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=u4mPiIEad1g
+" target="_blank"><img src="https://user-images.githubusercontent.com/18013815/71347265-f1cf9980-25a4-11ea-937b-2351cf8f48f6.png" 
+alt="Youtube Preview" width="500" border="1" /></a>
 
 ## 說明
 
