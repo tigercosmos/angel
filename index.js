@@ -284,18 +284,18 @@ module.exports = async function App(context) {
 
   return router([
     text(/^h(ello|i)|^\/start/i, Greeting),
-    text(/^help/i, Help),
-    text(/^比大小/, Roller),
+    text(/^help$/i, Help),
+    text(/^比大小$/, Roller),
     text('骰', Roll),
     text(/^猜數字|guess$/i, GuessNumber),
-    text(/^猜數字2|guess2$/, GuessNumber2),
+    text(/^猜數字2|guess2$/i, GuessNumber2),
     text('答案', GuessNumberAnswer),
     text(/^\d{4}$/, Guess),
     text(/^(\d|[a-c]){5}$/, Guess2),
     text(/^抽$/, Draw),
-    text(/^抽星座$/i, DrawConstellation),
-    text(/^抽正妹$/i, DrawGirl),
-    text(/^抽美食$/i, DrawFood),
-    text(/^BTS$/i, DrawBTS),
+    text(/^抽星座$/, DrawConstellation),
+    text(/^抽(正妹|美女)$/, DrawGirl),
+    text(/^抽美食$/, DrawFood),
+    text(/^BTS$/, DrawBTS),
   ]);
 };
