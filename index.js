@@ -5,7 +5,7 @@ const {
 } = require('bottender/router');
 
 async function Greeting(context) {
-  const GREETING_MSG = `嗨！歡迎來到 JingRu，一起享受歡樂的遊戲時光吧！輸入 help 查看說明。`;
+  const GREETING_MSG = `嗨！歡迎來到「安琪兒」，一起享受歡樂的遊戲時光吧！輸入 help 查看說明。`;
 
   await context.sendText(GREETING_MSG);
 }
@@ -48,6 +48,7 @@ async function GuessNumber(context) {
   state.number = {
     start: true,
     type: 1,
+    counter: 0,
     answer: `${random1}${random2}${random3}${random4}`
   };
   context.setState(state);
@@ -76,6 +77,7 @@ async function GuessNumber2(context) {
   state.number = {
     start: true,
     type: 2,
+    counter: 0,
     answer: `${random1}${random2}${random3}${random4}${random5}`
   };
   context.setState(state);
@@ -121,16 +123,19 @@ async function Guess(context) {
     }
   }
 
+  context.state.number.counter++;
+
   if (a == 4) {
     const user = await context.getUserProfile();
     const name = user.displayName;
+    const counter = context.state.number.counter;
 
     let state = context.state;
     state.number = {
       start: false,
     };
     context.setState(state);
-    await context.sendText(`Bingo！${name} 猜對了！`);
+    await context.sendText(`Bingo！${name} 猜對了！共猜了 ${counter} 次。`);
   } else {
     await context.sendText(`${a} A ${b} B`);
   }
@@ -167,16 +172,19 @@ async function Guess2(context) {
     }
   }
 
+  context.state.number.counter++;
+
   if (a == 5) {
     const user = await context.getUserProfile();
     const name = user.displayName;
+    const counter = context.state.number.counter;
 
     let state = context.state;
     state.number = {
       start: false,
     };
     context.setState(state);
-    await context.sendText(`Bingo！${name} 猜對了！`);
+    await context.sendText(`Bingo！${name} 猜對了！共猜了 ${counter} 次。`);
   } else {
     await context.sendText(`${a} A ${b} B`);
   }
