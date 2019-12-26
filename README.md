@@ -2,10 +2,17 @@
 
 一個娛樂眾人的聊天機器人
 
+<img src="https://user-images.githubusercontent.com/18013815/71482307-ccf55380-283c-11ea-8f90-44c91be6063a.png" alt="demo image" height="400" border="0">
+
 ## 使用方法
 
-加 Line 好友，然後可以加進群組和朋友一起玩
-<a href="https://lin.ee/5Pn8ddF"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png" alt="加入好友" height="36" border="0"></a>
+加 **Line** 好友，然後可以加進群組和朋友一起玩
+
+<a href="https://lin.ee/5Pn8ddF"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png" alt="add line" height="36" border="0"></a>
+
+加 **Telegram** 好友，然後可以加進群組和朋友一起玩
+
+<a href="https://t.me/angel_tw_bot"><img src="https://raw.githubusercontent.com/tigercosmos/vocabulary-titan/master/img/start-telegram.png" alt="add telegram" height="36" border="0"></a>
 
 ## 展演
 
