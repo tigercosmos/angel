@@ -25,6 +25,17 @@ async function Help(context) {
   await context.sendText(msg);
 }
 
+async function replyImageHelper(context, url) {
+  if (context.platform == "line") {
+    await context.replyImage({
+      originalContentUrl: url,
+      previewImageUrl: url,
+    });
+  } else if (context.platform == "telegram") {
+    await context.sendPhoto(url);
+  }
+}
+
 async function GuessNumber(context) {
   await context.sendText('遊戲開始！輸入四個數字來猜！');
 }
@@ -248,42 +259,27 @@ async function Roll(context) {
 
 async function Draw(context) {
   const url = await getInstagramUrl("");
-  await context.replyImage({
-    originalContentUrl: url,
-    previewImageUrl: url,
-  });
+  await replyImageHelper(context, url);
 }
 
 async function DrawBTS(context) {
   const url = await getInstagramUrl("bts");
-  await context.replyImage({
-    originalContentUrl: url,
-    previewImageUrl: url,
-  });
+  await replyImageHelper(context, url);
 }
 
 async function DrawGirl(context) {
   const url = await getInstagramUrl("girl");
-  await context.replyImage({
-    originalContentUrl: url,
-    previewImageUrl: url,
-  });
+  await replyImageHelper(context, url);
 }
 
 async function DrawConstellation(context) {
   const url = await getInstagramUrl("constellation");
-  await context.replyImage({
-    originalContentUrl: url,
-    previewImageUrl: url,
-  });
+  await replyImageHelper(context, url);
 }
 
 async function DrawFood(context) {
   const url = await getInstagramUrl("food");
-  await context.replyImage({
-    originalContentUrl: url,
-    previewImageUrl: url,
-  });
+  await replyImageHelper(context, url);
 }
 
 
