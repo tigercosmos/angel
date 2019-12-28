@@ -48,11 +48,11 @@ function printBoard(circle) {
   for (let i = 0; i <= size; i++) {
     for (let j = 0; j <= size; j++) {
       if (i == 0 && j == 0) {
-        board_print += "  ";
+        board_print += "　 ";
       } else if (i == 0) {
-        board_print += j + " ";
+        board_print += String.fromCharCode(j + 48 + 65248) + " ";
       } else if (j == 0) {
-        board_print += i + " ";
+        board_print += String.fromCharCode(i + 48 + 65248) + " ";
       } else {
         if ((1 << (((i - 1) * size + j) - 1)) & board) {
           board_print += '● ';
