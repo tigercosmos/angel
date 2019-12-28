@@ -15,17 +15,21 @@ async function Help(context) {
 - 猜數字(/g)：1A2B
 - 猜數字2(/g2)：1A2B 強化版
 - 劃圈圈(/c)：
-  輪流劃掉圈圈，每次劃掉連續直線的 1~3 個圈圈
-  最後劃的人輸。輸入方法為 "del xy xy xy"
+  輪流劃掉圈圈
+  每次劃掉連續直線的 1~3 個圈圈
+  最後劃的人輸
+  輸入方法為 "del xy xy xy"
   其中 xy 為座標，中間格一個空格。
-  例如輸入「del 34 35」、「del 11 12 13」。
+  例如輸入 "del 33 44"、"del 11 12 13"。
 - 比大小：2 個人輪流輸入「骰」來取得點數
-- 比大小 N：N 為數字，N 個人輪流輸入「骰」來取得點數
+- 比大小 N：
+  N 為數字，N 個人輪流輸入「骰」來取得點數
 - 抽：隨機出現圖片
 - 抽正妹：隨機正妹
 - 抽星座：隨機星運圖
 - 抽美食：隨機美食
 - BTS：隨機取得 BTS 照片
+- /info：取得更多資訊 
 `;
   await context.sendText(msg);
 }
@@ -416,6 +420,9 @@ async function DrawFood(context) {
   await replyImageHelper(context, url);
 }
 
+async function Info(context) {
+  await context.sendText("https://github.com/tigercosmos/angel");
+}
 
 module.exports = async function App(context) {
   if (context.event.isFollow || context.event.isJoin) {
@@ -439,5 +446,6 @@ module.exports = async function App(context) {
     text(/^抽(正妹|美女)$/, DrawGirl),
     text(/^抽美食$/, DrawFood),
     text(/^BTS$/, DrawBTS),
+    text(/^\/info$/, Info),
   ]);
 };
