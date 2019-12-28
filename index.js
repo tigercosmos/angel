@@ -11,9 +11,14 @@ async function Greeting(context) {
 }
 
 async function Help(context) {
-  const msg = `輸入以下指令：
-- 猜數字：1A2B
-- 猜數字2：1A2B 強化版
+  const msg = `輸入以下指令（括弧為縮寫指令）：
+- 猜數字(/g)：1A2B
+- 猜數字2(/g2)：1A2B 強化版
+- 劃圈圈(/c)：
+  輪流劃掉圈圈，每次劃掉連續直線的 1~3 個圈圈
+  最後劃的人輸。輸入方法為 "del xy xy xy"
+  其中 xy 為座標，中間格一個空格。
+  例如輸入「del 34 35」、「del 11 12 13」。
 - 比大小：2 個人輪流輸入「骰」來取得點數
 - 比大小 N：N 為數字，N 個人輪流輸入「骰」來取得點數
 - 抽：隨機出現圖片
@@ -36,8 +41,137 @@ async function replyImageHelper(context, url) {
   }
 }
 
-async function GuessNumber(context) {
-  await context.sendText('遊戲開始！輸入四個數字來猜！');
+function printBoard(circle) {
+  let board_print = "";
+  const size = circle.size;
+  const board = circle.board;
+  for (let i = 0; i <= size; i++) {
+    for (let j = 0; j <= size; j++) {
+      if (i == 0 && j == 0) {
+        board_print += "  ";
+      } else if (i == 0) {
+        board_print += j + " ";
+      } else if (j == 0) {
+        board_print += i + " ";
+      } else {
+        if ((1 << (((i - 1) * size + j) - 1)) & board) {
+          board_print += '● ';
+        } else {
+          board_print += '○ ';
+        }
+      }
+      if (j == size) {
+        board_print += '\n';
+      }
+    }
+  }
+  return board_print;
+}
+
+async function Circle(context) {
+  const size = 5;
+  const board = 0;
+  context.state.circle = {
+    start: true,
+    size: size,
+    board: board,
+  };
+
+  const board_print = printBoard(context.state.circle);
+  const msg = `遊戲開始！輸入座標劃掉至多三個連續圈圈！（例如：「del 11 12 13」）\n` + board_print;
+  await context.sendText(msg);
+}
+
+async function DeleteCircle(context) {
+  const circle = context.state.circle;
+
+  if (!circle.start) {
+    await context.sendText("輸入「劃圈圈」來開始遊戲！");
+    return;
+  }
+
+  const args = context.event.text.slice(4);
+  const ps = args.split(" ");
+
+  for (let i = 0; i < ps.length; i++) {
+    const p = ps[i];
+    if (p[0] > circle.size || p[0] == 0 || p[1] > circle.size || p[1] == 0) {
+      await context.sendText("座標錯誤，請重新輸入");
+      return;
+    }
+  }
+
+  if (ps.length > 3) {
+    await context.sendText("最多三個圈圈，請重新輸入");
+    return;
+  } else if (ps.length == 3) {
+    let flag = 0;
+    const dx = ps[1][0] - ps[0][0];
+    if (ps[2][0] - ps[1][0] != dx) {
+      flag = 1;
+    }
+
+    const dy = ps[1][1] - ps[0][1];
+    if (ps[2][1] - ps[1][1] != dy) {
+      flag = 1;
+    }
+
+    if (ps[0] == ps[1] || ps[1] == ps[2] || ps[0] == ps[2]) {
+      flag = 1;
+    }
+
+    if (flag) {
+      await context.sendText("必須是連續直線（橫縱斜），請重新輸入");
+      return;
+    }
+  } else if (ps.length == 2) {
+    let flag = 0;
+    const dx = ps[1][0] - ps[0][0];
+    if (dx != 1 && dx != 0 && dx != -1) {
+      flag = 1;
+    }
+
+    const dy = ps[1][1] - ps[0][1];
+    if (dy != 1 && dy != 0 && dy != -1) {
+      flag = 1;
+    }
+
+    if (ps[0] == ps[1]) {
+      flag = 1;
+    }
+
+    if (flag) {
+      await context.sendText("必須是連續直線（橫縱斜），請重新輸入");
+      return;
+    }
+  }
+
+  for (let i = 0; i < ps.length; i++) {
+    const p = ps[i];
+    const x = Number(p[0]);
+    const y = Number(p[1]);
+    const k = ((y - 1) * circle.size + x) - 1;
+    if (1 << k & circle.board) {
+      await context.sendText("座標重複，請重新輸入");
+      return;
+    }
+  }
+  for (let i = 0; i < ps.length; i++) {
+    const p = ps[i];
+    const x = Number(p[0]);
+    const y = Number(p[1]);
+    const k = ((y - 1) * circle.size + x) - 1;
+    circle.board |= 1 << k;
+  }
+
+  if (circle.board == (1 << circle.size * circle.size) - 1) {
+    context.state.circle.start = false;
+    await context.sendText("遊戲結束！最後輸入者輸！");
+    return;
+  }
+
+  const msg = printBoard(circle);
+  await context.sendText(msg);
 }
 
 async function GuessNumber(context) {
@@ -291,10 +425,12 @@ module.exports = async function App(context) {
   return router([
     text(/^h(ello|i)|^\/start/i, Greeting),
     text(/^help$/i, Help),
+    text(/^(劃圈圈|\/c)$/, Circle),
+    text(/^del/, DeleteCircle),
     text(/^比大小$/, Roller),
     text('骰', Roll),
-    text(/^(猜數字|guess)$/i, GuessNumber),
-    text(/^(猜數字2|guess2)$/i, GuessNumber2),
+    text(/^(猜數字|\/g)$/, GuessNumber),
+    text(/^(猜數字2|\/g2)$/, GuessNumber2),
     text('答案', GuessNumberAnswer),
     text(/^\d{4}$/, Guess),
     text(/^(\d|[a-c]){5}$/, Guess2),
