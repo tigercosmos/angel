@@ -90,19 +90,11 @@ function printGobangBoard(c) {
   for (let i = 0; i <= size; i++) {
     for (let j = 0; j <= size; j++) {
       if (i == 0 && j == 0) {
-        board_print += "　 ";
+        board_print += "   ";
       } else if (i == 0) {
-        if (j <= 9) {
-          board_print += String.fromCharCode(j + 48 + 65248) + " ";
-        } else {
-          board_print += j + " ";
-        }
+        board_print += j + "  ";
       } else if (j == 0) {
-        if (i <= 9) {
-          board_print += String.fromCharCode(i + 48 + 65248) + " ";
-        } else {
-          board_print += i + " ";
-        }
+        board_print += i + " ";
       } else {
         const x = i - 1;
         const y = j - 1;
@@ -212,7 +204,7 @@ function checkGobangWin(board, x, y) {
 }
 
 async function Gobang(context) {
-  const size = 10;
+  const size = 9;
   const board = [];
   for (let i = 0; i < size; i++) {
     board.push(Array(size).fill(0));
