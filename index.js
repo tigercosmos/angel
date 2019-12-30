@@ -159,7 +159,7 @@ function checkGobangWin(board, x, y) {
   y_ = y;
   --x_;
   --y_;
-  while (x_ >= 0 && x_ < size && y_ >= 0 && y < size && board[x_][y_] == player) {
+  while (x_ >= 0 && x_ < size && y_ >= 0 && y_ < size && board[x_][y_] == player) {
     counter++;
     --x_;
     --y_;
@@ -168,7 +168,7 @@ function checkGobangWin(board, x, y) {
   y_ = y;
   ++x_;
   ++y_;
-  while (x_ >= 0 && x_ < size && y_ >= 0 && y < size && board[x_][y_] == player) {
+  while (x_ >= 0 && x_ < size && y_ >= 0 && y_ < size && board[x_][y_] == player) {
     counter++;
     ++x_;
     ++y_;
@@ -182,7 +182,7 @@ function checkGobangWin(board, x, y) {
   y_ = y;
   --x_;
   ++y_;
-  while (x_ >= 0 && x_ < size && y_ >= 0 && y < size && board[x_][y_] == player) {
+  while (x_ >= 0 && x_ < size && y_ >= 0 && y_ < size && board[x_][y_] == player) {
     counter++;
     --x_;
     ++y_;
@@ -191,7 +191,7 @@ function checkGobangWin(board, x, y) {
   y_ = y;
   ++x_;
   --y_;
-  while (x_ >= 0 && x_ < size && y_ >= 0 && y < size && board[x_][y_] == player) {
+  while (x_ >= 0 && x_ < size && y_ >= 0 && y_ < size && board[x_][y_] == player) {
     counter++;
     ++x_;
     --y_;
