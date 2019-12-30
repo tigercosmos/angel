@@ -3,6 +3,8 @@ const {
   router,
   text
 } = require('bottender/router');
+const axios = require("axios");
+const config = require('./config')
 
 async function Greeting(context) {
   const GREETING_MSG = `嗨！歡迎來到「安琪兒」，一起享受歡樂的遊戲時光吧！輸入 help 查看說明。`;
@@ -594,28 +596,33 @@ async function Roll(context) {
   await context.sendText(reply);
 }
 
+async function fetch_image(type) {
+  const res = await axios.get(`${config.image_server_url}/img?type=${type}`);
+  return res.data.url;
+}
+
 async function Draw(context) {
-  const url = await getInstagramUrl("");
+  const url = await fetch_image("");
   await replyImageHelper(context, url);
 }
 
 async function DrawBTS(context) {
-  const url = await getInstagramUrl("bts");
+  const url = await fetch_image("bts");
   await replyImageHelper(context, url);
 }
 
 async function DrawGirl(context) {
-  const url = await getInstagramUrl("girl");
+  const url = await fetch_image("girl");
   await replyImageHelper(context, url);
 }
 
 async function DrawConstellation(context) {
-  const url = await getInstagramUrl("constellation");
+  const url = await fetch_image("constellation");
   await replyImageHelper(context, url);
 }
 
 async function DrawFood(context) {
-  const url = await getInstagramUrl("food");
+  const url = await fetch_image("food");
   await replyImageHelper(context, url);
 }
 

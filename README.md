@@ -50,8 +50,10 @@ git clone https://github.com/tigercosmos/angel.git
 cd angel
 npm install
 
-npm start # run server
-npm run console # console mode
+npm start # run chatbot server
+npm run console # run chatbot server in console mode
+
+npm run image-server # run the image service for chatbot
 ```
 
 ## 授權
