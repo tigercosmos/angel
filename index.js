@@ -53,31 +53,31 @@ async function replyImageHelper(context, url) {
   }
 }
 
-function printBoard(circle) {
-  let board_print = "";
+function printCircleBoard(circle) {
+  let circle_board_print = "";
   const size = circle.size;
   const board = circle.board;
   for (let i = 0; i <= size; i++) {
     for (let j = 0; j <= size; j++) {
       if (i == 0 && j == 0) {
-        board_print += "　 ";
+        circle_board_print += "　 ";
       } else if (i == 0) {
-        board_print += String.fromCharCode(j + 48 + 65248) + " ";
+        circle_board_print += String.fromCharCode(j + 48 + 65248) + " ";
       } else if (j == 0) {
-        board_print += String.fromCharCode(i + 48 + 65248) + " ";
+        circle_board_print += String.fromCharCode(i + 48 + 65248) + " ";
       } else {
         if ((1 << (((i - 1) * size + j) - 1)) & board) {
-          board_print += '● ';
+          circle_board_print += '● ';
         } else {
-          board_print += '○ ';
+          circle_board_print += '○ ';
         }
       }
       if (j == size) {
-        board_print += '\n';
+        circle_board_print += '\n';
       }
     }
   }
-  return board_print;
+  return circle_board_print;
 }
 
 async function Circle(context) {
@@ -89,8 +89,8 @@ async function Circle(context) {
     board: board,
   };
 
-  const board_print = printBoard(context.state.circle);
-  const msg = `遊戲開始！輸入座標劃掉至多三個連續圈圈！（例如：「del 11 12 13」）\n` + board_print;
+  const circle_board_print = printCircleBoard(context.state.circle);
+  const msg = `遊戲開始！輸入座標劃掉至多三個連續圈圈！（例如：「del 11 12 13」）\n` + circle_board_print;
   await context.sendText(msg);
 }
 
@@ -182,7 +182,7 @@ async function DeleteCircle(context) {
     return;
   }
 
-  const msg = printBoard(circle);
+  const msg = printCircleBoard(circle);
   await context.sendText(msg);
 }
 
@@ -435,6 +435,7 @@ module.exports = async function App(context) {
   return router([
     text(/^h(ello|i)|^\/start/i, Greeting),
     text(/^help$/i, Help),
+    text(/^(五子棋|\/c)$/, Gobang),
     text(/^(劃圈圈|\/c)$/, Circle),
     text(/^del/, DeleteCircle),
     text(/^比大小/, Roller),
