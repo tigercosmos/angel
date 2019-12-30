@@ -1,4 +1,3 @@
-const getInstagramUrl = require("./lib/getInstagramUrl")
 const {
   router,
   text
