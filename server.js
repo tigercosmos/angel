@@ -20,11 +20,10 @@ if (isConsole) {
     await getInstagramUrl("girl");
     await getInstagramUrl("food");
     await getInstagramUrl("constellation");
+
+    const port = process.env.PORT || 8080;
+    server.listen(port, () => {
+      console.log(`server is listening on ${port} port...`);
+    });
   })();
-
-
-  const port = process.env.PORT || 8080;
-  server.listen(port, () => {
-    console.log(`server is listening on ${port} port...`);
-  });
 }
