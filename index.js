@@ -10,6 +10,14 @@ async function Greeting(context) {
   await context.sendText(GREETING_MSG);
 }
 
+async function UserName(context) {
+  if (context.platform == "console") {
+    return "tester";
+  }
+  const user = await context.getUserProfile();
+  return user.displayName;
+}
+
 async function Help(context) {
   const msg = `輸入以下指令（括弧為縮寫指令）：
 - 猜數字(/g)：1A2B
@@ -272,8 +280,7 @@ async function Guess(context) {
   context.state.number.counter++;
 
   if (a == 4) {
-    const user = await context.getUserProfile();
-    const name = user.displayName;
+    const name = await UserName(context);
     const counter = context.state.number.counter;
 
     let state = context.state;
@@ -321,8 +328,7 @@ async function Guess2(context) {
   context.state.number.counter++;
 
   if (a == 5) {
-    const user = await context.getUserProfile();
-    const name = user.displayName;
+    const name = await UserName(context);
     const counter = context.state.number.counter;
 
     let state = context.state;
@@ -361,13 +367,13 @@ async function Roll(context) {
 
   const number = Math.floor((Math.random() * 100) + 1);
 
-  const user = await context.getUserProfile();
+  const name = await UserName(context);
   state.roll.result.push({
-    name: user.displayName,
+    name: name,
     number: number
   });
 
-  let reply = `${user.displayName} 骰出 ${number}\n`;
+  let reply = `${name} 骰出 ${number}\n`;
 
   if (state.roll.result.length == state.roll.people) {
     let id = 0;
@@ -431,7 +437,7 @@ module.exports = async function App(context) {
     text(/^help$/i, Help),
     text(/^(劃圈圈|\/c)$/, Circle),
     text(/^del/, DeleteCircle),
-    text(/^比大小$/, Roller),
+    text(/^比大小/, Roller),
     text('骰', Roll),
     text(/^(猜數字|\/g)$/, GuessNumber),
     text(/^(猜數字2|\/g2)$/, GuessNumber2),
