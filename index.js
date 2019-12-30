@@ -22,6 +22,7 @@ async function UserName(context) {
 
 async function Help(context) {
   const msg = `輸入以下指令（括弧為縮寫指令）：
+- 五子棋(/a)
 - 猜數字(/g)：1A2B
 - 猜數字2(/g2)：1A2B 強化版
 - 劃圈圈(/c)：
