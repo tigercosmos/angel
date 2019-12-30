@@ -1,8 +1,12 @@
 {
   "dependencies": {
     "axios": "^0.19.0",
+    "body-parser": "^1.19.0",
     "bottender": "^1.0.4",
     "cheerio": "^1.0.0-rc.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "http": "0.0.0",
     "minimist": "^1.2.0",
     "puppeteer": "^2.0.0"
   },
@@ -12,7 +16,8 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "console": "bottender start --console"
+    "console": "bottender start --console",
+    "image-server": "node image_server.js"
   },
   "name": "JingRu",
   "version": "0.0.1",
