@@ -10,9 +10,11 @@ async function Greeting(context) {
   await context.sendText(GREETING_MSG);
 }
 
+let test_id = true;
 async function UserName(context) {
   if (context.platform == "console") {
-    return "tester";
+    test_id = !test_id;
+    return `tester_${test_id}`;
   }
   const user = await context.getUserProfile();
   return user.displayName;
@@ -78,6 +80,207 @@ function printCircleBoard(circle) {
     }
   }
   return circle_board_print;
+}
+
+function printGobangBoard(c) {
+  let board_print = "";
+  const size = c.size;
+  const board = c.board;
+  for (let i = 0; i <= size; i++) {
+    for (let j = 0; j <= size; j++) {
+      if (i == 0 && j == 0) {
+        board_print += "　 ";
+      } else if (i == 0) {
+        if (j <= 9) {
+          board_print += String.fromCharCode(j + 48 + 65248) + " ";
+        } else {
+          board_print += j + " ";
+        }
+      } else if (j == 0) {
+        if (i <= 9) {
+          board_print += String.fromCharCode(i + 48 + 65248) + " ";
+        } else {
+          board_print += i + " ";
+        }
+      } else {
+        const x = i - 1;
+        const y = j - 1;
+        if (board[x][y] == 1) {
+          board_print += '● ';
+        } else if (board[x][y] == -1) {
+          board_print += '⊗ ';
+        } else {
+          board_print += '○ ';
+        }
+      }
+      if (j == size) {
+        board_print += '\n';
+      }
+    }
+  }
+  return board_print;
+}
+
+function checkGobangWin(board, x, y) {
+  const player = board[x][y];
+  const size = board[0].length;
+
+  let counter = 1;
+  let x_ = x;
+  let y_ = y;
+
+  --x_;
+  while (x_ >= 0 && x_ < size && board[x_][y] == player) {
+    counter++;
+    --x;
+  }
+  x_ = x;
+  ++x_;
+  while (x_ >= 0 && x_ < size && board[x_][y] == player) {
+    counter++;
+    ++x_;
+  }
+  if (counter >= 5) {
+    return true;
+  }
+
+  counter = 1;
+  y_ = y;
+  --y_;
+  while (y_ >= 0 && y_ < size && board[x][y_] == player) {
+    counter++;
+    --y_;
+  }
+  y_ = y;
+  ++y_;
+  while (y_ >= 0 && y_ < size && board[x][y_] == player) {
+    counter++;
+    ++y_;
+  }
+  if (counter >= 5) {
+    return true;
+  }
+
+  counter = 1;
+  x_ = x;
+  y_ = y;
+  --x_;
+  --y_;
+  while (x_ >= 0 && x_ < size && y_ >= 0 && y < size && board[x_][y_] == player) {
+    counter++;
+    --x_;
+    --y_;
+  }
+  x_ = x;
+  y_ = y;
+  ++x_;
+  ++y_;
+  while (x_ >= 0 && x_ < size && y_ >= 0 && y < size && board[x_][y_] == player) {
+    counter++;
+    ++x_;
+    ++y_;
+  }
+  if (counter >= 5) {
+    return true;
+  }
+
+  counter = 1;
+  x_ = x;
+  y_ = y;
+  --x_;
+  ++y_;
+  while (x_ >= 0 && x_ < size && y_ >= 0 && y < size && board[x_][y_] == player) {
+    counter++;
+    --x_;
+    ++y_;
+  }
+  x_ = x;
+  y_ = y;
+  ++x_;
+  --y_;
+  while (x_ >= 0 && x_ < size && y_ >= 0 && y < size && board[x_][y_] == player) {
+    counter++;
+    ++x_;
+    --y_;
+  }
+  if (counter >= 5) {
+    return true;
+  }
+
+  return false;
+}
+
+async function Gobang(context) {
+  const size = 10;
+  const board = [];
+  for (let i = 0; i < size; i++) {
+    board.push(Array(size).fill(0));
+  }
+  context.state.gobang = {
+    start: true,
+    size: size,
+    board: board,
+    players: [],
+    lastPlayer: "",
+  };
+  const gobang_board_print = printGobangBoard(context.state.gobang);
+  const msg = `遊戲開始！輸入座標來下子！（例如：「@3 4」代表下在橫 3 縱 4 之位置）\n` + gobang_board_print;
+  await context.sendText(msg);
+}
+
+async function PlayGobang(context) {
+  const gobang = context.state.gobang;
+
+  if (!gobang.start) {
+    await context.sendText("目前無棋局！");
+    return;
+  }
+
+  const input = context.event.text;
+  const x = Number(input.slice(1).split(" ")[0]) - 1;
+  const y = Number(input.slice(1).split(" ")[1]) - 1;
+
+  if (x < 0 || y < 0 || x >= gobang.size || y >= gobang.size) {
+    await context.sendText("不合法位置");
+    return;
+  }
+  if (gobang.board[x][y] != 0) {
+    await context.sendText("已經下過了");
+    return;
+  }
+
+  const name = await UserName(context);
+  if (gobang.players.length == 0) {
+    gobang.players.push(name);
+  } else if (gobang.players.length == 1) {
+    if (gobang.players[0] == name) {
+      await context.sendText("第二人需為不同人");
+      return;
+    }
+    gobang.players.push(name);
+  }
+
+  const player = (name == gobang.players[0]) ? 1 : (name == gobang.players[1]) ? -1 : 0;
+  if (player == 0) {
+    await context.sendText("非參賽選手，如需更改選手，請重新開局");
+    return;
+  }
+  if (name == gobang.lastPlayer) {
+    await context.sendText("還沒輪到你唷！");
+    return;
+  }
+  gobang.lastPlayer = name;
+
+  gobang.board[x][y] = player;
+
+  if (checkGobangWin(gobang.board, x, y)) {
+    gobang.start = false;
+    await context.sendText(`${await UserName(context)} 贏了！`);
+    return;
+  };
+
+  const gobang_board_print = printGobangBoard(context.state.gobang);
+  await context.sendText(gobang_board_print);
 }
 
 async function Circle(context) {
@@ -435,7 +638,8 @@ module.exports = async function App(context) {
   return router([
     text(/^h(ello|i)|^\/start/i, Greeting),
     text(/^help$/i, Help),
-    text(/^(五子棋|\/c)$/, Gobang),
+    text(/^(五子棋|\/a)$/, Gobang),
+    text(/^@(\d){1,2}\s(\d){1,2}$/, PlayGobang),
     text(/^(劃圈圈|\/c)$/, Circle),
     text(/^del/, DeleteCircle),
     text(/^比大小/, Roller),
