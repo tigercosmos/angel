@@ -178,7 +178,7 @@ async function DeleteCircle(context) {
 
   if (circle.board == (1 << circle.size * circle.size) - 1) {
     context.state.circle.start = false;
-    await context.sendText("遊戲結束！最後輸入者輸！");
+    await context.sendText(`遊戲結束！${await UserName(context)} 輸了！`);
     return;
   }
 
