@@ -249,10 +249,7 @@ async function Guess(context) {
   const answer = context.state.number.answer;
 
   const num = context.event.text;
-  // if (num.length != 4) {
-  //   await context.sendText('必須是四個數字！');
-  //   return;
-  // }
+
   for (let i = 0; i < 3; i++) {
     for (let j = i + 1; j < 4; j++) {
       if (num[i] == num[j]) {
