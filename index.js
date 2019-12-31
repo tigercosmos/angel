@@ -126,7 +126,7 @@ function checkGobangWin(board, x, y) {
   --x_;
   while (x_ >= 0 && x_ < size && board[x_][y] == player) {
     counter++;
-    --x;
+    --x_;
   }
   x_ = x;
   ++x_;
