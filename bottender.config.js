@@ -10,7 +10,18 @@ module.exports = {
   },
 
   initialState: {
-    roll: {},
+    roll: {
+      start: false
+    },
+    circle: {
+      start: false
+    },
+    gobang: {
+      start: false
+    },
+    number: {
+      start: false
+    },
   },
 
   channels: {
