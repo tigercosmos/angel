@@ -21,6 +21,7 @@ async function UserName(context) {
     return user.displayName;
   } else if (context.platform == "telegram") {
     const chat = await context.getChat();
+    console.log(chat)
     return chat.username;
   }
 }
