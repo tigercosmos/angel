@@ -20,9 +20,9 @@ async function UserName(context) {
     const user = await context.getUserProfile();
     return user.displayName;
   } else if (context.platform == "telegram") {
-    const chat = await context.getChat();
-    console.log(chat)
-    return chat.username;
+    // quick hack: i don't know how to get username
+    test_id = !test_id;
+    return `tester_${test_id}`;
   }
 }
 
