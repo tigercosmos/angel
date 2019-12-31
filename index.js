@@ -22,7 +22,7 @@ async function UserName(context) {
   } else if (context.platform == "telegram") {
     // quick hack: i don't know how to get username
     test_id = !test_id;
-    return `tester_${test_id}`;
+    return test_id? '第一人' : '第二人';
   }
 }
 
@@ -96,7 +96,7 @@ function printGobangBoard(c) {
   for (let i = 0; i <= size; i++) {
     for (let j = 0; j <= size; j++) {
       if (i == 0 && j == 0) {
-        board_print += "   ";
+        board_print += "0  ";
       } else if (i == 0) {
         board_print += j + "  ";
       } else if (j == 0) {
