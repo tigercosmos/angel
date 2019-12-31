@@ -16,9 +16,13 @@ async function UserName(context) {
   if (context.platform == "console") {
     test_id = !test_id;
     return `tester_${test_id}`;
+  } else if (context.platform == "line") {
+    const user = await context.getUserProfile();
+    return user.displayName;
+  } else if (context.platform == "telegram") {
+    const chat = await context.getChat();
+    return chat.username;
   }
-  const user = await context.getUserProfile();
-  return user.displayName;
 }
 
 async function Help(context) {
