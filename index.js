@@ -45,6 +45,7 @@ async function Help(context) {
 - 抽正妹：隨機正妹
 - 抽星座：隨機星運圖
 - 抽美食：隨機美食
+- 「坦」或「扛」：隨機抽梗圖
 - BTS：隨機取得 BTS 照片
 - /info：取得更多資訊 
 `;
@@ -630,6 +631,11 @@ async function DrawFood(context) {
   await replyImageHelper(context, url);
 }
 
+async function DrawFunny(context) {
+  const url = await fetch_image("funny");
+  await replyImageHelper(context, url);
+}
+
 async function Info(context) {
   await context.sendText("https://github.com/tigercosmos/angel");
 }
@@ -658,6 +664,7 @@ module.exports = async function App(context) {
     text(/^抽(正妹|美女)$/, DrawGirl),
     text(/^抽美食$/, DrawFood),
     text(/^BTS$/, DrawBTS),
+    text(/^(坦|扛)$/, DrawFunny),
     text(/^\/info$/, Info),
   ]);
 };

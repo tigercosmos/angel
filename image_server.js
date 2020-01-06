@@ -42,6 +42,7 @@ const httpServer = http.createServer(app);
   await getInstagramUrl("food");
   await getInstagramUrl("constellation");
   await getInstagramUrl("bts");
+  await getInstagramUrl("funny");
 
   httpServer.listen(13322);
 })();
