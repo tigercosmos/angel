@@ -22,7 +22,7 @@ async function UserName(context) {
   } else if (context.platform == "telegram") {
     // quick hack: i don't know how to get username
     test_id = !test_id;
-    return test_id? '第一人' : '第二人';
+    return test_id ? '第一人' : '第二人';
   }
 }
 
@@ -607,33 +607,39 @@ async function fetch_image(type) {
 }
 
 async function Draw(context) {
-  const url = await fetch_image("");
-  await replyImageHelper(context, url);
+  // const url = await fetch_image("");
+  // await replyImageHelper(context, url);
+  await context.sendText("維修中，預計 1/15 完成");
 }
 
 async function DrawBTS(context) {
-  const url = await fetch_image("bts");
-  await replyImageHelper(context, url);
+  // const url = await fetch_image("bts");
+  // await replyImageHelper(context, url);
+  await context.sendText("維修中，預計 1/15 完成");
 }
 
 async function DrawGirl(context) {
-  const url = await fetch_image("girl");
-  await replyImageHelper(context, url);
+  // const url = await fetch_image("girl");
+  // await replyImageHelper(context, url);
+  await context.sendText("維修中，預計 1/15 完成");
 }
 
 async function DrawConstellation(context) {
-  const url = await fetch_image("constellation");
-  await replyImageHelper(context, url);
+  // const url = await fetch_image("constellation");
+  // await replyImageHelper(context, url);
+  await context.sendText("維修中，預計 1/15 完成");
 }
 
 async function DrawFood(context) {
-  const url = await fetch_image("food");
-  await replyImageHelper(context, url);
+  // const url = await fetch_image("food");
+  // await replyImageHelper(context, url);
+  await context.sendText("維修中，預計 1/15 完成");
 }
 
 async function DrawFunny(context) {
-  const url = await fetch_image("funny");
-  await replyImageHelper(context, url);
+  // const url = await fetch_image("funny");
+  // await replyImageHelper(context, url);
+  await context.sendText("維修中，預計 1/15 完成");
 }
 
 async function Info(context) {
